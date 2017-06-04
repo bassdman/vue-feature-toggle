@@ -1,14 +1,15 @@
 {
   "name": "vue-feature-toggle",
   "main": "dist/build.js",
-  "version" : "0.1.1",
+  "version" : "0.1.7",
   "description": "A Component that provides feature toggle for vue projects",
   "author": "Manuel Gelsen",
   "scripts": {
+    "prepublish" : "npm run build",
     "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o dist/build.js",
     "serve": "http-server -o -s -c 1 -a localhost",
     "dev": "npm-run-all --parallel watchify serve",
-    "build": "cross-env NODE_ENV=production browserify -g envify src/main.js | uglifyjs -c warnings=false -m > dist/build.js"
+    "build": "cross-env NODE_ENV=production browserify -g envify --standalone vue-feature-toggle src/* | uglifyjs -c warnings=false -m > dist/build.js"
   },
   "dependencies": {
     "vue": "^2.0.1",
@@ -18,7 +19,7 @@
     "type": "git",
     "url": "https://github.com/bassdman/vue-feature-toggle.git"
   },
-  "license": "GNU GENERAL PUBLIC LICENSE",
+  "license": "GPL-3.0",
   "keywords": [
     "vuejs",
     "feature",

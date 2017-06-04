@@ -73,7 +73,7 @@ var getVisibilityFn = function(variantOrFn,fn){
 }
 
 
-export default {
+module.exports = {
   props: ['name','variant','data'],
   name : 'feature',
   data () {

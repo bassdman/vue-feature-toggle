@@ -1,3 +1,3 @@
 import feature from './Feature.vue';
 
-export default feature;
+module.exports = feature;
