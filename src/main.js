@@ -1,1 +1,3 @@
-module.exports = require('./Feature.vue')
+import feature from './Feature.vue';
+
+export default feature;
