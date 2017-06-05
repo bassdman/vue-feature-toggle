@@ -1,8 +1,8 @@
 {
   "name": "vue-feature-toggle",
   "main": "dist/build.js",
-  "version" : "0.1.8",
-  "description": "A Component that provides feature toggle for vue projects",
+  "version" : "0.1.9",
+  "description": "Enables advanced feature-toggle with vue",
   "author": "Manuel Gelsen",
   "scripts": {
     "prepublish" : "npm run build",
@@ -18,6 +18,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/bassdman/vue-feature-toggle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bassdman/vue-feature-toggle.git/issues"
   },
   "license": "GPL-3.0",
   "keywords": [
