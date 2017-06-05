@@ -1,4 +1,7 @@
 # vue-feature-toggle
+
+> Enables advanced feature-toggle with vue
+
 [![npm version](https://img.shields.io/npm/v/vue-feature-toggle.svg)](https://www.npmjs.com/package/vue-feature-toggle)
 [![npm downloads](https://img.shields.io/npm/dt/vue-feature-toggle.svg)](https://www.npmjs.com/package/vue-feature-toggle)
 	
@@ -19,7 +22,7 @@ Your shop is written in vue. Anywhere you have a vue-template like this:
     <!-- That's the old one, in a few days the new one, commented out here will be released 
         <left-nav-new v-if></left-nav-new>
     -->
-    <left-nav v-if></left-nav>
+    <left-nav></left-nav>
 
     <!-- Every shop has a slider with amazing foodinfo on the startpage-->
     <startpage-slider-de ref="food/bratwurst" v-if="shop == 'de'"></startpage-slider-de>
@@ -33,12 +36,13 @@ Your shop is written in vue. Anywhere you have a vue-template like this:
 </content-area>
 ```
 It's generally a bad idea to have visibility rules in the template. Of course, by refactoring the template a little bit the code will look better. 
-But that's not the point. The problem is: The view-logic is spread in multiple files and if the viewlogic changes, you have to change in minimum one template.
+But that's not the point. The problem is: The view-logic is spread in .html and .js files and if the viewlogic changes, you have to change at least them. And all visibility rules are spread over the whole system.
 That's not good.
 
 ## The solution
 Feature-toggle. All View-Logic is placed in one place. This can be a config file, a webservice or a tool with a User Interface.a
 When you want to change a visibility rule, for example "Show feature XYZ also in the french shop", you just have to update the config or add this info in an UI. And no developer is needed for it.
+
 <a href="https://martinfowler.com/articles/feature-toggles.html">Read the article from Martin Fowler about feature toggle for a more understanding.</a>
 
 ## The Usage
@@ -52,11 +56,10 @@ Create a vue project. For example with the vue-cli.
     cd vue-feature-toggle-example
     npm install
 ```
-Now install the vue-feature-toggle component 
+Now install the vue-feature-toggle component. 
 ``` shell
     npm install vue-feature-toggle --save
 ```
-    
 Replace the index.html - file with the following:
 ``` html
 <!DOCTYPE html>
@@ -85,13 +88,10 @@ Replace the index.html - file with the following:
 </body>
 </html>
 ```
-    
 Replace the src/main.js file with the following: 
 ``` javascript
 var Vue = require('vue');
 var feature = require('vue-feature-toggle');
-
-Vue.use(require('vue-resource'));
 
 //Feature1 will always be shown
 feature.visibility('feature1',function () {
@@ -144,13 +144,13 @@ feature.visibility('feature2','new', function () {
 ```
 ```javascript
 /*
-You can pass data via the data-attribute. Look at HTML of feature3 as an example. 
+You can pass data via the data-attribute. Corresp. HTML-Tag: <feature name="feature3" :data="grumpfel"/>
 */
 feature.visibility('feature3','new', function (data,name,variant) {
       return data == "grumpfel";
 });
 
-//Write a : before the data-tag to parse the content in the data-attribute <feature name="feature3" :data="{'text':'grumpfel'"}>
+//Write a : before the data-tag to parse the content in the data-attribute <feature name="feature3" :data="{'text':'grumpfel'"/> Otherwise the data is returned as a string.
 feature.visibility('feature3','new', function (data,name,variant) {
       return data.text == "grumpfel";
 });
@@ -211,5 +211,86 @@ feature.visibility('feature3',function(data,name,variant){
      <feature name="feature3" variant="old"/> -> hidden
     <feature name="feature3" variant="new"/> -> hidden
 */
+```
+
+#### Visible
+Sometimes you want to know via javascript if a feature is visible or not. Here's the code for it:
+```javascript
+// prooves if tag <feature name="feature2"/> is visible
+var isVisible = feature.isVisible('feature2');
+
+// prooves if tag <feature name="feature2" variant="new"/> is visible
+var isVisible_new = feature.isVisible('feature2','new');
+
+// prooves if tag <feature name="feature2" variant="new" data="grumpfl"/> is visible
+var isVisible_data = feature.isVisible('feature2','new','grumpfl');
+
+// prooves if tag <feature name="feature2" data="grumpfl"/> is visible
+var isVisible_data_onlyname = feature.isVisible('feature2',null,'grumpfl');
+```
+
+#### ShowLogs
+Imagine this following html-snippet:
+```html
+    <!-- Why is this ******* feature hidden? I checked the visibilityrule. It should be visible... -->
+    <feature name="anAmazingFeature">This feature should be shown</feature>
+```
+All developers of the world agree with you, debugging the reason, why a feature is visible or not is horrible. But don't worry, this time is over. We have a perfect solution for it. And it's just one line of code.
+```javascript
+feature.showLogs(); //or feature.showLogs(true);
+```
+This returns a log like the following:
+```html
+Check Visibility of Feature "anAmazingFeature".
+The requiredVisibility rule returns false. This feature will be hidden.
+
+Check Visibility of Feature "anotherAmazingFeature", variant "new" with data {"id":"bla"}.
+The requiredVisibility rule returns true. This feature will be shown when no other rule rejects it.
+No visibility rule found matching name and variant.
+No rules found for name anotherAmazingFeature without variants.
+No default rule found.
+Only the requiredVisibility rule was found. This returned true. => This feature will be visible.
+```
+With this you don't have to waste your time with debugging the visibility state. 
+
+#### Log
+Log a custom message, when showLogs() == true.
+```javascript
+feature.log("Here's my custom message");
+```
+
+#### Noscript
+You work in a company and your customers have disabled javascript? Well, that makes life harder but we can still use it. We can provide at least a basic functionality with pure css.
+Just look at the modified index.html file.
+``` html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>vue-feature-example</title>
+   <style type="text/css">
+   /*Hides all features by default. When javascript is enabled, this attribute is overwritten*/
+    feature{
+      display:none;
+    }
+
+    /*Shows all features with noscript attribute*/
+    feature[noscript="noscript"], feature[noscript="true"]{
+      display:block;
+    }
+    </style>
+</head>
+
+<body>
+  <div id="app">
+        <feature name="feature1">This is hidden without javascript</feature>
+        
+        <feature name="feature2" noscript="noscript">This is shown without javascript.</feature>
+        <feature name="feature2" variant="new" noscript="true">This is shown without javascript.</feature>
+  </div>
+  <script src="dist/build.js"></script>
+</body>
+</html>
 ```
 ## License	
