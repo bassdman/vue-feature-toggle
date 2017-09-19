@@ -1,7 +1,7 @@
 {
   "name": "vue-feature-toggle",
   "main": "dist/build.js",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Enables advanced feature-toggle with vue",
   "author": "Manuel Gelsen",
   "scripts": {
