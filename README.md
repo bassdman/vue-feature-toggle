@@ -20,7 +20,7 @@ Your shop is written in vue. Anywhere you have a vue-template like this:
     <testmode-nav v-if="testmode"></testmode-nav>
 
     <!-- That's the old one, in a few days the new one, commented out here will be released 
-        <left-nav-new v-if></left-nav-new>
+        <left-nav-new></left-nav-new>
     -->
     <left-nav></left-nav>
 
@@ -52,7 +52,7 @@ Look in the example folder for working examples (as soon as the example folder e
 Create a vue project. For example with the vue-cli.
 ``` shell
     npm install -g vue-cli
-    npm init browserify vue-feature-toggle-example
+    vue init browserify vue-feature-toggle-example
     cd vue-feature-toggle-example
     npm install
 ```
@@ -82,7 +82,7 @@ Replace the index.html - file with the following:
         <feature name="feature2" variant="grumpfel">This "Feature2" with variant "grumpfel"</feature>
         
         <feature name="feature3" variant="old" data="grumpfel">This "Feature3" with variant "old" has some Data.</feature>
-        <feature name="feature3" variant="new" :data="{'text':'grumpfel'"}>This "Feature3" with variant "old" has some Data. (watch the : before the data-attribute. Otherwise you'll get this as a string...)</feature>
+        <feature name="feature3" variant="new" :data="{'text':'grumpfel'}">This "Feature3" with variant "old" has some Data. (watch the : before the data-attribute. Otherwise you'll get this as a string...)</feature>
   </div>
   <script src="dist/build.js"></script>
 </body>
