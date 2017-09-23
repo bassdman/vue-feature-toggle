@@ -1,16 +1,18 @@
 {
   "name": "vue-feature-toggle",
-  "main": "dist/build.js",
-  "version": "0.1.11",
+  "main": "dist/vue-feature-toggle.min.js",
+  "version": "0.1.12",
   "description": "Enables advanced feature-toggle with vue",
   "author": "Manuel Gelsen",
   "scripts": {
-    "test": "jasmine",
-    "prepublish": "npm run build",
-    "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o dist/build.js",
+    "predev": "npm run build",
+    "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o dist/vue-feature-toggle.min.js",
     "serve": "http-server -o -s -c 1 -a localhost",
     "dev": "npm-run-all --parallel watchify serve",
-    "build": "cross-env NODE_ENV=production browserify -g envify --standalone vue-feature-toggle src/* | uglifyjs -c warnings=false -m > dist/build.js"
+    "build": "npm run build_normal",
+    "prebuild": "npm run build_minified",
+    "build_normal": "cross-env NODE_ENV=production browserify -g envify --standalone vue-feature-toggle src/* > dist/vue-feature-toggle.js",
+    "build_minified": "cross-env NODE_ENV=production browserify -g envify --standalone vue-feature-toggle src/* | uglifyjs -c warnings=false -m > dist/vue-feature-toggle.min.js"
   },
   "dependencies": {
     "vue": "^2.4.4"

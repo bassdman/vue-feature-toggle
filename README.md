@@ -46,7 +46,7 @@ When you want to change a visibility rule, for example "Show feature XYZ also in
 <a href="https://martinfowler.com/articles/feature-toggles.html">Read the article from Martin Fowler about feature toggle for a more understanding.</a>
 
 ## The Usage
-Look in the example folder for working examples (as soon as the example folder exists ;) ).
+Look in the example folder for working examples.
 
 ### Initialisation
 Create a vue project. For example with the vue-cli.
