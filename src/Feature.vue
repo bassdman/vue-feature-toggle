@@ -78,7 +78,7 @@ module.exports = {
   name : 'feature',
   data () {
     return {
-      isVisible: this.isVisible(this.name,this.variant,this.data)
+      isVisible: this._isVisible(this.name,this.variant,this.data)
     }
   },
   logAndReturn : function(returnValue, fn)
@@ -94,7 +94,7 @@ module.exports = {
   },
   isVisible: function(name,variant,data)
   {
-      return this.methods.isVisible(name,variant,data);
+      return this.methods._isVisible(name,variant,data);
   },
   visibility : function(name,variantOrFn,fn){
       if(name == undefined)
@@ -123,7 +123,7 @@ module.exports = {
       visibilities['_default'] = fn;
   },
   methods: {
-    isVisible: function(name,variant,data){
+    _isVisible: function(name,variant,data){
       log(`Check Visibility of <b>Feature "${name}", variant "${variant==undefined?'':variant}"${data? " with data " + JSON.stringify(data) : ""}.`);
       if(name == undefined)
         throw new Error('The attribute "name" is required for tag <feature></feature>. Example: <feature name="aname"></feature>');
@@ -159,7 +159,7 @@ module.exports = {
       log('No visibility rule found matching name and variant.');
 
       if(variantExists && typeof visibilityOnlyNameFnResult == 'boolean')
-          return logAndReturn(visibilityFnResult,`Found a visibility rule for name ${name} without variants. The rule returns ${visibilityOnlyNameFnResult}. => This feature will be ${visibilityOnlyNameFnResult ? 'visible' : 'hidden' }.`);
+          return logAndReturn(visibilityOnlyNameFnResult,`Found a visibility rule for name ${name} without variants. The rule returns ${visibilityOnlyNameFnResult}. => This feature will be ${visibilityOnlyNameFnResult ? 'visible' : 'hidden' }.`);
       else if(variantExists)
         log(`No rules found for name ${name} without variants.`)
 

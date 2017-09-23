@@ -57,7 +57,7 @@ module.exports = {
   name: 'feature',
   data: function data() {
     return {
-      isVisible: this.isVisible(this.name, this.variant, this.data)
+      isVisible: this._isVisible(this.name, this.variant, this.data)
     };
   },
 
@@ -71,7 +71,7 @@ module.exports = {
     _showLogs = _showLogs2 == undefined ? true : _showLogs2;
   },
   isVisible: function isVisible(name, variant, data) {
-    return this.methods.isVisible(name, variant, data);
+    return this.methods._isVisible(name, variant, data);
   },
   visibility: function visibility(name, variantOrFn, fn) {
     if (name == undefined) throw new Error('feature.visibility(): 1st parameter name must be defined');
@@ -95,7 +95,7 @@ module.exports = {
     visibilities['_default'] = fn;
   },
   methods: {
-    isVisible: function isVisible(name, variant, data) {
+    _isVisible: function _isVisible(name, variant, data) {
       _log('Check Visibility of <b>Feature "' + name + '", variant "' + (variant == undefined ? '' : variant) + '"' + (data ? " with data " + JSON.stringify(data) : "") + '.');
       if (name == undefined) throw new Error('The attribute "name" is required for tag <feature></feature>. Example: <feature name="aname"></feature>');
 
@@ -123,7 +123,7 @@ module.exports = {
       if (visibilityFnExists) return _logAndReturn(visibilityFnResult, 'The visibility rule returns ' + visibilityFnResult + '. This feature will be ' + (visibilityFnResult ? 'visible' : 'hidden') + '.');
       _log('No visibility rule found matching name and variant.');
 
-      if (variantExists && typeof visibilityOnlyNameFnResult == 'boolean') return _logAndReturn(visibilityFnResult, 'Found a visibility rule for name ' + name + ' without variants. The rule returns ' + visibilityOnlyNameFnResult + '. => This feature will be ' + (visibilityOnlyNameFnResult ? 'visible' : 'hidden') + '.');else if (variantExists) _log('No rules found for name ' + name + ' without variants.');
+      if (variantExists && typeof visibilityOnlyNameFnResult == 'boolean') return _logAndReturn(visibilityOnlyNameFnResult, 'Found a visibility rule for name ' + name + ' without variants. The rule returns ' + visibilityOnlyNameFnResult + '. => This feature will be ' + (visibilityOnlyNameFnResult ? 'visible' : 'hidden') + '.');else if (variantExists) _log('No rules found for name ' + name + ' without variants.');
 
       if (defaultFnExists) return _logAndReturn(defaultFnResult, 'Found a defaultVisibility rule. The rule returns ' + defaultFnResult + '. => This feature will be ' + (defaultFnResult ? 'visible' : 'hidden') + '.');
       _log('No default rule found.');
