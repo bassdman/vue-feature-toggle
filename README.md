@@ -229,7 +229,7 @@ var isVisible_data = feature.isVisible('feature2','new','grumpfl');
 var isVisible_data_onlyname = feature.isVisible('feature2',null,'grumpfl');
 ```
 
-####Container Tag
+#### Container Tag
 Normally a feature has a div-element as root-element.
 ```html
     <feature name="anAmazingFeature">an amazing feature</feature>
