@@ -53,7 +53,20 @@ var getVisibilityFn = function getVisibilityFn(variantOrFn, fn) {
 };
 
 module.exports = {
-  props: ['name', 'variant', 'data'],
+  props: {
+    name: {
+      type: String
+    },
+    variant: {
+      type: String
+    }, data: {
+      type: [Object, String]
+    },
+    tag: {
+      type: String,
+      default: 'div'
+    }
+  },
   name: 'feature',
   data: function data() {
     return {
@@ -61,6 +74,14 @@ module.exports = {
     };
   },
 
+  render: function render(createElement) {
+    if (this.isVisible) {
+      return createElement(this.tag, {
+        'feature-name': this.name,
+        'feature-variant': this.variant
+      }, this.$slots.default);
+    }
+  },
   logAndReturn: function logAndReturn(returnValue, fn) {
     return _logAndReturn(returnValue, fn);
   },
@@ -137,8 +158,6 @@ module.exports = {
 })()
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.isVisible)?_c('div',{attrs:{"feature-name":_vm.name,"feature-variant":_vm.variant}},[_vm._t("default")],2):_vm._e()}
-__vue__options__.staticRenderFns = []
 __vue__options__._scopeId = "data-v-32d0d8b2"
 
 },{}],2:[function(require,module,exports){

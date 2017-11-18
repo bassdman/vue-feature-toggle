@@ -229,6 +229,21 @@ var isVisible_data = feature.isVisible('feature2','new','grumpfl');
 var isVisible_data_onlyname = feature.isVisible('feature2',null,'grumpfl');
 ```
 
+####Container Tag
+Normally a feature has a div-element as root-element.
+```html
+    <feature name="anAmazingFeature">an amazing feature</feature>
+    will be rendered to (if visible):
+    <div>an amazing feature</div>
+```
+But unfortunately sometimes div-elements are already styled by legacy-css-classes.
+To prevent this, you can define the root-element.
+```html
+    <feature name="anAmazingFeature" tag="span">an amazing feature</feature>
+    will be rendered to (if visible):
+    <span>an amazing feature</span>
+```
+
 #### ShowLogs
 Imagine this following html-snippet:
 ```html
