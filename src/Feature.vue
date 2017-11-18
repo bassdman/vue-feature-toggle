@@ -1,12 +1,4 @@
-<template>
-  <div v-bind:feature-name="name" v-bind:feature-variant="variant" v-if="isVisible">
-    <slot></slot>
-  </div>
-</template>
- 
 <script>
- 
-
 var _showLogs = false;
 var log = function(message)
 {
@@ -74,11 +66,32 @@ var getVisibilityFn = function(variantOrFn,fn){
 
 
 module.exports = {
-  props: ['name','variant','data'],
+  props: {
+    name: {
+      type: String
+    },
+    variant: {
+      type: String
+    },data: {
+      type: [Object, String]
+    },
+    tag: { 
+      type:String,
+      default:'div'
+    }
+  },
   name : 'feature',
   data () {
     return {
       isVisible: this._isVisible(this.name,this.variant,this.data)
+    }
+  },
+  render: function (createElement) {
+    if (this.isVisible) {
+      return createElement(this.tag, {
+        'feature-name': this.name,
+        'feature-variant': this.variant
+      }, this.$slots.default)
     }
   },
   logAndReturn : function(returnValue, fn)
