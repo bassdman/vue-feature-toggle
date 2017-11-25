@@ -4,7 +4,7 @@
 
 [![npm version](https://img.shields.io/npm/v/vue-feature-toggle.svg)](https://www.npmjs.com/package/vue-feature-toggle)
 [![npm downloads](https://img.shields.io/npm/dt/vue-feature-toggle.svg)](https://www.npmjs.com/package/vue-feature-toggle)
-	
+[![npm downloads](https://img.shields.io/github/license/mashape/apistatus.svg)](https://www.npmjs.com/package/vue-feature-toggle)
 ## Install
 
 ``` shell
