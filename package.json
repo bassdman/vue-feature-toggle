@@ -1,7 +1,7 @@
 {
   "name": "vue-feature-toggle",
   "main": "dist/vue-feature-toggle.min.js",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Enables advanced feature-toggle with vue",
   "author": "Manuel Gelsen",
   "scripts": {
@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/bassdman/vue-feature-toggle.git/issues"
   },
-  "license": "GPL-3.0",
+  "license": "MIT",
   "keywords": [
     "vuejs",
     "feature",

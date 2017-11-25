@@ -309,3 +309,5 @@ Just look at the modified index.html file.
 </html>
 ```
 ## License	
+<a href="https://opensource.org/licenses/MIT">MIT</a>.
+Copyright (c) 2017 Manuel Gelsen
