@@ -18,9 +18,8 @@
 import * as feature from 'vue-feature-toggle';
 
 //All Feature2-Features will always be shown
-feature.visibility('feature2',function () {
-    return true;
-});
+feature.visibility('feature2',true);
+feature.visibility('feature2','new',false); 
 
 //Feature.showLogs();
 export default {

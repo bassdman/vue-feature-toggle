@@ -5,6 +5,15 @@
 [![npm version](https://img.shields.io/npm/v/vue-feature-toggle.svg)](https://www.npmjs.com/package/vue-feature-toggle)
 [![npm downloads](https://img.shields.io/npm/dt/vue-feature-toggle.svg)](https://www.npmjs.com/package/vue-feature-toggle)
 [![npm downloads](https://img.shields.io/github/license/mashape/apistatus.svg)](https://www.npmjs.com/package/vue-feature-toggle)
+
+## Attention
+Vue-Feature-Toggle v. 1.x.beta uses the feature-toggle-api.
+
+
+The usage shouldn't change at all and you have ways more possibilietes then before.
+But there can still be some bugs.
+If you want a stable version, use v. 0.2.1 instead (which doesn't use the feature-toggle-api).
+
 ## Install
 
 ``` shell
