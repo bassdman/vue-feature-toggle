@@ -22,7 +22,7 @@ module.exports = Object.assign({},api,{
   name : 'feature',
   data () {
     return {
-      isVisible: this.isVisible(this.name,this.variant,this.data)
+      isVisible: api.isVisible(this.name,this.variant,this.data)
     }
   },
   render: function (createElement) {
