@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "vue": "^2.0.1",
-    "vue-feature-toggle": "^0.1.12"
+    "vue-feature-toggle": "^1.0.4-alpha"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",

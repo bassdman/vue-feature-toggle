@@ -7,11 +7,12 @@
 [![npm downloads](https://img.shields.io/github/license/mashape/apistatus.svg)](https://www.npmjs.com/package/vue-feature-toggle)
 
 ## Attention
-Vue-Feature-Toggle v. 1.x.beta uses the feature-toggle-api.
+Vue-Feature-Toggle v. 1.x.x-alpha implements the [feature-toggle-api](https://www.npmjs.com/package/feature-toggle-api).
 
 
-The usage shouldn't change at all and you have ways more possibilietes then before.
-But there can still be some bugs.
+The usage doesn't change at all and you have ways more possibilities in comparison to version 0.2.1.
+If you find some bugs, please contact me.
+
 If you want a stable version, use v. 0.2.1 instead (which doesn't use the feature-toggle-api).
 
 ## Install
@@ -117,12 +118,17 @@ var vue = new Vue({
 //IMPORTANT: Don't write your rules after the new Vue()-declaration - they won't work here....
 ```
 ### Features
+[Only a subset of features is listed here. See the documentation of the feature-toggle-api for further features](https://www.npmjs.com/package/feature-toggle-api)
+
 For the next examples we will always use the HTML from above. Just insert the visibility rules under the other rule
 
 #### Basic visibility
 ```javascript
 // shows Feature1
 //Feature2 is not configured, so it will be hidden
+feature.visibility('feature1',true);
+
+//You can also write it like this
 feature.visibility('feature1',function () {
         //here would be some more complex logic, in this example we keep it simple
         return true;
@@ -222,22 +228,6 @@ feature.visibility('feature3',function(data,name,variant){
 */
 ```
 
-#### Visible
-Sometimes you want to know via javascript if a feature is visible or not. Here's the code for it:
-```javascript
-// prooves if tag <feature name="feature2"/> is visible
-var isVisible = feature.isVisible('feature2');
-
-// prooves if tag <feature name="feature2" variant="new"/> is visible
-var isVisible_new = feature.isVisible('feature2','new');
-
-// prooves if tag <feature name="feature2" variant="new" data="grumpfl"/> is visible
-var isVisible_data = feature.isVisible('feature2','new','grumpfl');
-
-// prooves if tag <feature name="feature2" data="grumpfl"/> is visible
-var isVisible_data_onlyname = feature.isVisible('feature2',null,'grumpfl');
-```
-
 #### Container Tag
 Normally a feature has a div-element as root-element.
 ```html
@@ -259,7 +249,7 @@ Imagine this following html-snippet:
     <!-- Why is this ******* feature hidden? I checked the visibilityrule. It should be visible... -->
     <feature name="anAmazingFeature">This feature should be shown</feature>
 ```
-All developers of the world agree with you, debugging the reason, why a feature is visible or not is horrible. But don't worry, this time is over. We have a perfect solution for it. And it's just one line of code.
+All developers of the world agree with you, debugging sth lik this is horrible. But don't worry, we have a perfect solution for it. And it's just one line of code.
 ```javascript
 feature.showLogs(); //or feature.showLogs(true);
 ```
@@ -319,4 +309,4 @@ Just look at the modified index.html file.
 ```
 ## License	
 <a href="https://opensource.org/licenses/MIT">MIT</a>.
-Copyright (c) 2017 Manuel Gelsen
+Copyright (c) 2018 Manuel Gelsen
