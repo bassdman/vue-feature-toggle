@@ -129,7 +129,7 @@ For the next examples we will always use the HTML from above. Just insert the vi
 feature.visibility('feature1',true);
 
 //You can also write it like this
-feature.visibility('feature1',function () {
+feature.visibility('feature1',function (rule) {
         //here would be some more complex logic, in this example we keep it simple
         return true;
 });
@@ -142,7 +142,7 @@ feature.visibility('feature1',function () {
     <feature name="feature2" variant="old"/>
     <feature name="feature2" variant="grumpfel"/>
  */
-feature.visibility('feature2', function () {
+feature.visibility('feature2', function (rule) {
         return true;
 });
 
@@ -153,7 +153,7 @@ feature.visibility('feature2', function () {
     <feature name="feature2" variant="old"/> -> shown
     <feature name="feature2" variant="grumpfel"/> -> shown
 */
-feature.visibility('feature2','new', function () {
+feature.visibility('feature2','new', function (rule) {
         return false;
 });
 ```
@@ -161,23 +161,23 @@ feature.visibility('feature2','new', function () {
 /*
 You can pass data via the data-attribute. Corresp. HTML-Tag: <feature name="feature3" :data="grumpfel"/>
 */
-feature.visibility('feature3','new', function (data,name,variant) {
-      return data == "grumpfel";
+feature.visibility('feature3','new', function (rule) {
+      return rule.data == "grumpfel";
 });
 
 //Write a : before the data-tag to parse the content in the data-attribute <feature name="feature3" :data="{'text':'grumpfel'"/> Otherwise the data is returned as a string.
-feature.visibility('feature3','new', function (data,name,variant) {
-      return data.text == "grumpfel";
+feature.visibility('feature3','new', function (rule) {
+      return rule.data.text == "grumpfel";
 });
 ```
 #### Default Visibility
 Bored of writing the same visibility rule again and again? Use defaultVisibility. This is the default-rule and will be overwritten by feature.visibility() - rules.
 ``` javascript
-feature.defaultVisibility(function(data,name,variant){
+feature.defaultVisibility(function(rule){
     return true;
 });
 
-feature.visibility('feature2', 'new', function(data,name,variant){
+feature.visibility('feature2', 'new', function(rule){
     return false;
 });
 /*
@@ -198,22 +198,22 @@ This rule is allways executed, before the other rules. When it returns false, th
    var globalConfig = { "feature2" : true }
 */
 
-feature.requiredVisibility(function(data,name,variant){
-    //In this case it returns true, when name == 'feture2'
-    return globalConfig[name] === true;
+feature.requiredVisibility(function(rule){
+    //In this case it returns true, when name == 'feature2'
+    return globalConfig[rule.name] === true;
 });
 
 /*
   feature2, variant "new" returns false, but requiredConfig returns true. Both rules must match, so it will be hidden
 */
-feature.visibility('feature2','new',function(data,name,variant){
+feature.visibility('feature2','new',function(rule){
     return false;
 });
 
 /*
   feature3 returns true, but requiredConfig returns false. Both rules must match, so Feature3 is hidden
 */
-feature.visibility('feature3',function(data,name,variant){
+feature.visibility('feature3',function(rule){
     return true;
 });
 
