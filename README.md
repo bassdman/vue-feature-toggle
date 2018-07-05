@@ -10,10 +10,7 @@
 Vue-Feature-Toggle v. 1.x.x-alpha implements the [feature-toggle-api](https://www.npmjs.com/package/feature-toggle-api).
 
 
-The usage doesn't change at all and you have ways more possibilities in comparison to version 0.2.1.
-If you find some bugs, please contact me.
-
-If you want a stable version, use v. 0.2.1 instead (which doesn't use the feature-toggle-api).
+Some parameters changed in comparison to version 0.2.1. You can find the differences [here](https://github.com/bassdman/feature-toggle-api#version-changes): 
 
 ## Install
 
