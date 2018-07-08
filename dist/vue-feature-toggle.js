@@ -1,14 +1,7 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.vueFeatureToggle = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function (global){
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-exports.default = featuretoggleapi;
 
 var parseToFn = function parseToFn(fnOrBool) {
     if (typeof fnOrBool == 'boolean') return function () {
@@ -23,26 +16,45 @@ function initVisibilities() {
 
     var returnVisibilities = {};
     Object.keys(visibilities).forEach(function (key) {
+        if (key.startsWith('_')) return;
         returnVisibilities[key] = parseToFn(visibilities[key]);
     });
-
     return returnVisibilities;
 }
 
-function featuretoggleapi(rawVisibilities) {
+function featuretoggleapi() {
+    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+
     var globals = {
         datas: {},
-        listeners: [],
-        visibilities: initVisibilities(rawVisibilities),
-        showLogs: false
+        listeners: {},
+        visibilities: initVisibilities(config),
+        showLogs: false,
+        usedPlugins: []
     };
 
-    function executeListener(event) {
-        globals.listeners.forEach(function (listener) {
-            listener(event);
+    function init(api) {
+        if (config._plugins) {
+            if (!Array.isArray(config._plugins)) throw new Error('featuretoggleapi()-constructor: config.plugins must be an array.');
 
-            //zeige die logs an
-            if (global.showLogs) api.isVisible(event.name, event.variant, event.data);
+            config._plugins.forEach(function (plugin) {
+                if (typeof plugin !== 'function') throw new Error('featuretoggleapi()-constructor: config.plugins needs functions as entries, not ' + (typeof plugin === 'undefined' ? 'undefined' : _typeof(plugin)) + '.');
+
+                _addPlugin(plugin, api);
+            });
+        }
+
+        triggerEvent('init');
+    }
+
+    function _addPlugin(plugin, api) {
+        plugin(api);
+    }
+
+    function triggerEvent(eventtype, param) {
+        (globals.listeners[eventtype] || []).forEach(function (listener) {
+            listener(param);
         });
     }
 
@@ -186,7 +198,6 @@ function featuretoggleapi(rawVisibilities) {
         var variantExists = variant != null;
         var visibilityOnlyNameFnKey = getKey(name, null);
         var visibilityOnlyNameFn = visibilities[visibilityOnlyNameFnKey];
-        var visibilityOnlyNameFnExists = visibilities[visibilityOnlyNameFnKey] != null;
         var visibilityOnlyNameFnResult = getVisibility(visibilityOnlyNameFn, 'visibility function (only name)', name, variant, data);
 
         var defaultFn = visibilities['_default'];
@@ -208,7 +219,7 @@ function featuretoggleapi(rawVisibilities) {
         return logAndReturn(false, 'No rules were found. This feature will be hidden.');
     }
 
-    return {
+    var api = {
         name: 'feature-toggle-api',
         setData: function setData(nameParam, variantOrDataParam, dataParam) {
             if (nameParam == undefined) throw new Error('setData(): The name must of the feature must be defined, but ist undefined');
@@ -220,14 +231,15 @@ function featuretoggleapi(rawVisibilities) {
 
             globals.datas[event.key] = event.data;
 
-            executeListener(event);
+            triggerEvent('visibilityrule', event);
         },
         on: function on(eventtype, fn, config) {
-            var validEventTypes = ['visibilityrule'];
-            if (validEventTypes.indexOf(eventtype.toLowerCase()) == -1) throw new Error('Eventtype "' + eventtype.toLowerCase() + '" does not exist. Only "visibilityrule" is valid');
+            globals.listeners[eventtype] = globals.listeners[eventtype] || [];
+            globals.listeners[eventtype].push(fn);
 
-            globals.listeners.push(fn);
-
+            triggerEvent('registerEvent', {
+                type: eventtype
+            });
             if (config != undefined && config.ignorePreviousRules) return;
 
             Object.keys(globals.visibilities).forEach(function (key) {
@@ -237,6 +249,7 @@ function featuretoggleapi(rawVisibilities) {
                 fn(event);
             });
         },
+        trigger: triggerEvent,
         showLogs: function showLogs(_showLogs) {
             globals.showLogs = _showLogs == undefined ? true : _showLogs;
         },
@@ -254,7 +267,7 @@ function featuretoggleapi(rawVisibilities) {
             globals.visibilities[event.key] = event.visibilityFunction;
             globals.datas[event.key] = event.data;
 
-            executeListener(event);
+            triggerEvent('visibilityrule', event);
         },
         requiredVisibility: function requiredVisibility(fn) {
             if (typeof fn != "function") throw new Error('feature.requiredVisibility(): 1st parameter must be a function, but is ' + (typeof fn === 'undefined' ? 'undefined' : _typeof(fn)));
@@ -265,61 +278,75 @@ function featuretoggleapi(rawVisibilities) {
             if (typeof fn != "function") throw new Error('feature.defaultVisibility(): 1st parameter must be a function, but is ' + (typeof fn === 'undefined' ? 'undefined' : _typeof(fn)));
 
             globals.visibilities['_default'] = parseToFn(fn);
+        },
+        addPlugin: function addPlugin(plugin) {
+            if (globals.usedPlugins.includes(plugin)) return;
+
+            _addPlugin(plugin, api);
+            globals.usedPlugins.push(plugin);
         }
     };
+    init(api);
+    return api;
 }
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+module.exports = featuretoggleapi;
 },{}],2:[function(require,module,exports){
 ;(function(){
 'use strict';
 
-var featureToggleApi = require('feature-toggle-api/dist/feature-toggle-api.js').default;
+var featureToggleApi = require('feature-toggle-api');
 
 var api = new featureToggleApi();
 
-module.exports = Object.assign({}, api, {
-  props: {
-    name: {
-      type: String
+function vuePlugin(api) {
+  Object.assign(api, {
+    props: {
+      name: {
+        type: String
+      },
+      variant: {
+        type: String
+      },
+      data: {
+        type: [Object, String]
+      },
+      tag: {
+        type: String,
+        default: 'div'
+      }
     },
-    variant: {
-      type: String
+    name: 'feature',
+    data: function data() {
+      return {
+        isVisible: api.isVisible(this.name, this.variant, this.data)
+      };
     },
-    data: {
-      type: [Object, String]
-    },
-    tag: {
-      type: String,
-      default: 'div'
-    }
-  },
-  name: 'feature',
-  data: function data() {
-    return {
-      isVisible: api.isVisible(this.name, this.variant, this.data)
-    };
-  },
 
-  render: function render(createElement) {
-    if (this.isVisible) {
-      return createElement(this.tag, {
-        'feature-name': this.name,
-        'feature-variant': this.variant
-      }, this.$slots.default);
+    render: function render(createElement) {
+      if (this.isVisible) {
+        return createElement(this.tag, {
+          'feature-name': this.name,
+          'feature-variant': this.variant
+        }, this.$slots.default);
+      }
+    },
+    methods: {
+      _isVisible: function _isVisible(name, variant, data) {
+        return api.isVisible(name, variant, data);
+      }
     }
-  },
-  methods: {
-    _isVisible: function _isVisible(name, variant, data) {
-      return api.isVisible(name, variant, data);
-    }
-  }
-});
+  });
+}
+
+api.addPlugin(vuePlugin);
+module.exports = api;
 })()
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 __vue__options__._scopeId = "data-v-32d0d8b2"
 
-},{"feature-toggle-api/dist/feature-toggle-api.js":1}],3:[function(require,module,exports){
+},{"feature-toggle-api":1}],3:[function(require,module,exports){
 'use strict';
 
 var _Feature = require('./Feature.vue');

@@ -6,11 +6,9 @@
 [![npm downloads](https://img.shields.io/npm/dt/vue-feature-toggle.svg)](https://www.npmjs.com/package/vue-feature-toggle)
 [![npm downloads](https://img.shields.io/github/license/mashape/apistatus.svg)](https://www.npmjs.com/package/vue-feature-toggle)
 
-## Attention
-Vue-Feature-Toggle v. 1.x.x-alpha implements the [feature-toggle-api](https://www.npmjs.com/package/feature-toggle-api).
-
-
-Some parameters changed in comparison to version 0.2.1. You can find the differences [here](https://github.com/bassdman/feature-toggle-api#version-changes): 
+## Info
+Vue-Feature-Toggle implements the [feature-toggle-api](https://www.npmjs.com/package/feature-toggle-api) v 3.1.4".
+Only a subset of features is listed here. For the others, watch the documentation of the api.
 
 ## Install
 
@@ -115,7 +113,7 @@ var vue = new Vue({
 //IMPORTANT: Don't write your rules after the new Vue()-declaration - they won't work here....
 ```
 ### Features
-[Only a subset of features is listed here. See the documentation of the feature-toggle-api for further features](https://www.npmjs.com/package/feature-toggle-api)
+[Only a subset of features is listed here. See the documentation of the feature-toggle-api for more features](https://www.npmjs.com/package/feature-toggle-api)
 
 For the next examples we will always use the HTML from above. Just insert the visibility rules under the other rule
 
