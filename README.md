@@ -7,7 +7,7 @@
 [![npm downloads](https://img.shields.io/github/license/mashape/apistatus.svg)](https://www.npmjs.com/package/vue-feature-toggle)
 
 ## Info
-Vue-Feature-Toggle implements the [feature-toggle-api](https://www.npmjs.com/package/feature-toggle-api) v 3.1.4".
+Vue-Feature-Toggle implements the [feature-toggle-api](https://www.npmjs.com/package/feature-toggle-api) v 3.3.0".
 Only a subset of features is listed here. For the others, watch the documentation of the api.
 
 ## Install

@@ -1,7 +1,7 @@
 {
   "name": "vue-feature-toggle",
   "main": "dist/vue-feature-toggle.min.js",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Enables advanced feature-toggle with vue",
   "author": "Manuel Gelsen",
   "scripts": {
@@ -15,7 +15,7 @@
     "build_minified": "cross-env NODE_ENV=production browserify -g envify --standalone vue-feature-toggle src/* | uglifyjs -c warnings=false -m > dist/vue-feature-toggle.min.js"
   },
   "dependencies": {
-    "feature-toggle-api": "^3.1.4",
+    "feature-toggle-api": "^3.3.0",
     "vue": "^2.4.4"
   },
   "repository": {
