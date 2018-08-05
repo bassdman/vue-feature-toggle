@@ -173,7 +173,7 @@ function featuretoggleapi() {
         event.result = event.visibilityFunction({
             name: event.name,
             variant: event.variant,
-            data: event.data,
+            data: event.data || {},
             _internalCall: true,
             description: 'When attaching a function, the result must be calculated internally. You can filter this out with the _internalCall:true -Flag.'
         });
@@ -245,7 +245,7 @@ function featuretoggleapi() {
             Object.keys(globals.visibilities).forEach(function (key) {
                 var event = parseKey(key, globals);
                 var rule = globals.visibilities[key];
-                event.result = rule(event.name, event.variant, event.data);
+                event.result = rule(event);
                 fn(event);
             });
         },
@@ -266,7 +266,6 @@ function featuretoggleapi() {
 
             globals.visibilities[event.key] = event.visibilityFunction;
             globals.datas[event.key] = event.data;
-
             triggerEvent('visibilityrule', event);
         },
         requiredVisibility: function requiredVisibility(fn) {
