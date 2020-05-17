@@ -11,13 +11,22 @@ var parseToFn = function parseToFn(fnOrBool) {
     return fnOrBool;
 };
 
+var getKey = function getKey(name, variant) {
+    var _name = name.toLowerCase();
+    if (typeof variant == 'string') {
+        _name += "#" + variant.toLowerCase();
+    }
+
+    return _name;
+};
+
 function initVisibilities() {
     var visibilities = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     var returnVisibilities = {};
     Object.keys(visibilities).forEach(function (key) {
         if (key.startsWith('_')) return;
-        returnVisibilities[key] = parseToFn(visibilities[key]);
+        returnVisibilities[getKey(key)] = parseToFn(visibilities[key]);
     });
     return returnVisibilities;
 }
@@ -101,14 +110,6 @@ function featuretoggleapi() {
         return logAndReturn(false, 'The ' + functionname + ' returns ' + calculatedVisibility + '. => Please return true or false. This result (and all non-boolean results) will return false.');
     };
 
-    function getKey(name, variant) {
-        var _name = name.toLowerCase();
-        if (typeof variant == 'string') {
-            _name += "#" + variant.toLowerCase();
-        }
-
-        return _name;
-    }
     function parseKey(key) {
         var parts = key.split('#');
         return {
@@ -198,6 +199,7 @@ function featuretoggleapi() {
         var variantExists = variant != null;
         var visibilityOnlyNameFnKey = getKey(name, null);
         var visibilityOnlyNameFn = visibilities[visibilityOnlyNameFnKey];
+        var visibilityOnlyNameFnExists = visibilities[visibilityOnlyNameFnKey] != null;
         var visibilityOnlyNameFnResult = getVisibility(visibilityOnlyNameFn, 'visibility function (only name)', name, variant, data);
 
         var defaultFn = visibilities['_default'];
