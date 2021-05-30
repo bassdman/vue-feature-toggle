@@ -2,41 +2,46 @@
 <html>
 
 <head>
-  <title>Welcome to Vue</title>
+    <title>Welcome to Vue</title>
 </head>
 
 <body>
-  <div id="app">
-    <!-- The name property is required -->
-    <feature name="feature1">This is "Feature1"</feature>
-    <feature name="featureh1" tag="h1">This feature is rendered with a h1-tag as root-Element, not a div.</feature>
-    <!-- The variant property is optional and can be any string -->
-    <feature name="feature2">This is "Feature2"</feature>
-    <feature name="feature2" variant="new">This is "Feature2" with variant "new"</feature>
-    <feature name="feature2" variant="old">This "Feature2" with variant "old"</feature>
-    <feature name="feature2" variant="grumpfel">This "Feature2" with variant "grumpfel"</feature>
+    <div id="app">
+        <!-- The name property is required -->
+        <feature name="feature1">This is "Feature1"</feature>
+        <feature name="featureh1" tag="h1">This feature is rendered with a h1-tag as root-Element, not a div.</feature>
+        <!-- The variant property is optional and can be any string -->
+        <feature name="feature2">This is "Feature2"</feature>
+        <feature name="feature2" variant="new">This is "Feature2" with variant "new"</feature>
+        <feature name="feature2" variant="old">This "Feature2" with variant "old"</feature>
+        <feature name="feature2" variant="grumpfel">This "Feature2" with variant "grumpfel"</feature>
 
-    <feature name="feature3" variant="old" data="grumpfel">This "Feature3" with variant "old" has some Data.</feature>
-    <feature name="feature3" variant="new" :data="{'text':'grumpfel'}">This "Feature3" with variant "old" has some Data. (watch the : before the data-attribute. Otherwise you'll get this as a string...)</feature>
-  </div>
+        <feature name="feature3" variant="old" data="grumpfel">This "Feature3" with variant "old" has some Data.</feature>
+        <feature name="feature3" variant="new" :data="{'text':'grumpfel'}">This "Feature3" with variant "old" has some Data. (watch the : before the data-attribute. Otherwise you'll get this as a string...)</feature>
+    </div>
 
-  <script></script>
-  <script src="https://unpkg.com/vue"></script>
-  <script src="../../dist/vue-feature-toggle.min.js"></script>
-  <script>
-    var feature = window.vueFeatureToggle;
+    <script></script>
+    <script src="https://unpkg.com/vue"></script>
+    <!--Important: you need the .es5-Version if you directly embed the plugin in the browser-->
+    <script src="../../dist/vue-feature-toggle.es5.min.js"></script>
+    <script>
+        var feature = window.FeatureToggleComponent;
 
-    //Feature1 will always be shown 
-    feature.visibility('feature1', true);
-    feature.visibility('featureh1',function(){return true});
+        //Feature1 will always be shown 
+        feature.visibility('feature2', true);
+        feature.visibility('feature2', 'new', function() {
+            return false
+        });
 
-    //write down the other visibility-rules here     
+        //write down the other visibility-rules here     
 
-    var vue = new Vue({
-      el: '#app',
-      components: { 'feature': feature }
-    })
-  </script>
+        var vue = new Vue({
+            el: '#app',
+            components: {
+                'feature': feature
+            }
+        })
+    </script>
 </body>
 
 </html>

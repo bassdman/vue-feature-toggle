@@ -57,7 +57,7 @@ Look in the example folder for working examples.
 Create a vue project. For example with the vue-cli.
 ``` shell
     npm install -g vue-cli
-    vue init browserify vue-feature-toggle-example
+    vue create vue-feature-toggle-example
     cd vue-feature-toggle-example
     npm install
 ```
@@ -65,19 +65,12 @@ Now install the vue-feature-toggle component.
 ``` shell
     npm install vue-feature-toggle --save
 ```
-Replace the index.html - file with the following:
+Replace the App.vue - file with the following:
 ``` html
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <title>vue-feature-example</title>
-</head>
-
-<body>
-  <div id="app">
-        <!-- The name property is required -->
+<template>
+  <div>
+        <h1>We test vue-feature-toggle in vue2</h1>
+    <!-- The name property is required -->
         <feature name="feature1">This is "Feature1"</feature>
         
         <!-- The variant property is optional and can be any string -->
@@ -89,29 +82,25 @@ Replace the index.html - file with the following:
         <feature name="feature3" variant="old" data="grumpfel">This "Feature3" with variant "old" has some Data.</feature>
         <feature name="feature3" variant="new" :data="{'text':'grumpfel'}">This "Feature3" with variant "old" has some Data. (watch the : before the data-attribute. Otherwise you'll get this as a string...)</feature>
   </div>
-  <script src="dist/build.js"></script>
-</body>
-</html>
+</template>
+
+<script>
+import { FeatureToggleComponent } from 'vue-feature-toggle';
+
+//All Feature2-Features will always be shown
+FeatureToggleComponent.visibility('feature2',true);
+FeatureToggleComponent.visibility('feature2','new',false); 
+
+export default {
+  name: 'app',
+  components: {
+    feature: FeatureToggleComponent
+  }
+}
+</script>
 ```
-Replace the src/main.js file with the following: 
-``` javascript
-var Vue = require('vue');
-var feature = require('vue-feature-toggle');
+See the projects in the [example-folder](https://github.com/bassdman/vue-feature-toggle/tree/master/examples) if you want to see, how it is fully embedded in real projects.
 
-//Feature1 will always be shown
-feature.visibility('feature1',function () {
-    return true;
-});
-
-//write down the other visibility-rules here    
-
-var vue = new Vue({
-    el: '#app',
-    components: { 'feature': feature }
-})
-
-//IMPORTANT: Don't write your rules after the new Vue()-declaration - they won't work here....
-```
 ### Features
 [Only a subset of features is listed here. See the documentation of the feature-toggle-api for more features](https://www.npmjs.com/package/feature-toggle-api)
 

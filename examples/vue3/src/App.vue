@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+    <h1>We test vue-feature-toggle in vue3</h1>
     <!-- The name property is required -->
         <feature name="feature1">This is "Feature1"</feature>
         
@@ -11,21 +11,20 @@
         
         <feature name="feature3" variant="old" data="grumpfel">This "Feature3" with variant "old" has some Data.</feature>
         <feature name="feature3" variant="new" :data="{'text':'grumpfel'}">This "Feature3" with variant "old" has some Data. (watch the : before the data-attribute. Otherwise you'll get this as a string...)</feature>
-  </div>
 </template>
 
 <script>
-import * as feature from 'vue-feature-toggle';
+import { FeatureToggleComponent } from 'vue-feature-toggle';
 
 //All Feature2-Features will always be shown
-feature.visibility('feature2',true);
-feature.visibility('feature2','new',false); 
+FeatureToggleComponent.visibility('feature2',true);
+FeatureToggleComponent.visibility('feature2','new',false); 
 
 //Feature.showLogs();
 export default {
   name: 'app',
   components: {
-    feature
+    feature: FeatureToggleComponent
   }
 }
 </script>
