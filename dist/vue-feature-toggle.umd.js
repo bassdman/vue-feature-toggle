@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('vue')) :
   typeof define === 'function' && define.amd ? define(['exports', 'vue'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.FeatureToggleComponentWrapper = {}, global.vue));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.FeatureToggleComponent = {}, global.vue));
 }(this, (function (exports, vue) { 'use strict';
 
   function _interopNamespace(e) {
@@ -368,4 +368,3 @@
   Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
-var FeatureToggleComponent = FeatureToggleComponentWrapper.FeatureToggleComponent;

@@ -1,5 +1,5 @@
-import featureToggleApi from 'feature-toggle-api';
 import * as vue from 'vue';
+import featureToggleApi from 'feature-toggle-api';
 
 const FeatureToggleComponent = new featureToggleApi();
 
