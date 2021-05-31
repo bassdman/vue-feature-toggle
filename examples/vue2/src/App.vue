@@ -16,17 +16,17 @@
 </template>
 
 <script>
-import { FeatureToggleComponent } from 'vue-feature-toggle';
+import { FeatureToggleComponent as feature } from 'vue-feature-toggle';
 
 //All Feature2-Features will always be shown
-FeatureToggleComponent.visibility('feature2',true);
-FeatureToggleComponent.visibility('feature2','new',false); 
+feature.visibility('feature2',true);
+feature.visibility('feature2','new',false); 
 
 //Feature.showLogs();
 export default {
   name: 'app',
   components: {
-    feature: FeatureToggleComponent
+    feature
   }
 }
 </script>

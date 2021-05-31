@@ -86,16 +86,17 @@ Replace the App.vue - file with the following:
 </template>
 
 <script>
-import { FeatureToggleComponent } from 'vue-feature-toggle';
+import { FeatureToggleComponent as feature } from 'vue-feature-toggle';
 
 //All Feature2-Features will always be shown
-FeatureToggleComponent.visibility('feature2',true);
-FeatureToggleComponent.visibility('feature2','new',false); 
+feature.visibility('feature2',true);
+feature.visibility('feature2','new',false); 
 
+//Feature.showLogs();
 export default {
   name: 'app',
   components: {
-    feature: FeatureToggleComponent
+    feature
   }
 }
 </script>
@@ -104,7 +105,7 @@ export default {
 #### Other initialisations
 In a cjs-project
 ```javascript
-    const { FeatureToggleComponent } = require('vue-feature-toggle/dist/vue-feature-toggle.umd.js')
+    const { FeatureToggleComponent : feature} = require('vue-feature-toggle/dist/vue-feature-toggle.umd.js')
    // do sth with the FeatureToggleComponent
 ```
 In the browser
