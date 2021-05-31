@@ -99,7 +99,25 @@ export default {
 }
 </script>
 ```
-See the projects in the [example-folder](https://github.com/bassdman/vue-feature-toggle/tree/master/examples) if you want to see, how it is fully embedded in real projects.
+
+#### Other initialisations
+In a cjs-project
+```javascript
+    const { FeatureToggleComponent } = require('vue-feature-toggle/dist/vue-feature-toggle.umd.js')
+   // do sth with the FeatureToggleComponent
+```
+In the browser
+```html
+    <script src="https://unpkg.com/vue"></script>
+    <!--Important: you need the .es5-Version if you directly embed the plugin in the browser-->
+    <script src=".path/to/vue-feature-toggle/dist/vue-feature-toggle.umd.min.js"></script>
+    <script>
+        var feature = window.FeatureToggleComponent;
+
+        //do sth with the FeatureToggleComponent
+    </script>
+```
+See more the projects in the [example-folder](https://github.com/bassdman/vue-feature-toggle/tree/master/examples).
 
 ### Features
 [Only a subset of features is listed here. See the documentation of the feature-toggle-api for more features](https://www.npmjs.com/package/feature-toggle-api)
