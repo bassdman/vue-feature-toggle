@@ -7,9 +7,10 @@
 [![npm downloads](https://img.shields.io/github/license/mashape/apistatus.svg)](https://www.npmjs.com/package/vue-feature-toggle)
 
 ## Info
-Vue-Feature-Toggle implements the [feature-toggle-api](https://www.npmjs.com/package/feature-toggle-api) v 3.3.0".
+Vue-Feature-Toggle implements the [feature-toggle-api](https://www.npmjs.com/package/feature-toggle-api) v 3.4.1".
 Only a subset of features is listed here. For the others, watch the documentation of the api.
 
+This package is COMPATIBLE WITH VUE3!!!!!
 ## Install
 
 ``` shell
@@ -109,7 +110,7 @@ In a cjs-project
 In the browser
 ```html
     <script src="https://unpkg.com/vue"></script>
-    <!--Important: you need the .es5-Version if you directly embed the plugin in the browser-->
+    <!--Important: you can find .umd-Version in the dist-folder of this package -->
     <script src=".path/to/vue-feature-toggle/dist/vue-feature-toggle.umd.min.js"></script>
     <script>
         var feature = window.FeatureToggleComponent;
