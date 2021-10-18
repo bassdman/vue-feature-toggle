@@ -2,7 +2,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('vue')) :
   typeof define === 'function' && define.amd ? define(['exports', 'vue'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.FeatureToggleComponent = {}, global.vue));
-}(this, (function (exports, vue) { 'use strict';
+})(this, (function (exports, vue) { 'use strict';
 
   function _interopNamespace(e) {
     if (e && e.__esModule) return e;
@@ -13,14 +13,12 @@
           var d = Object.getOwnPropertyDescriptor(e, k);
           Object.defineProperty(n, k, d.get ? d : {
             enumerable: true,
-            get: function () {
-              return e[k];
-            }
+            get: function () { return e[k]; }
           });
         }
       });
     }
-    n['default'] = e;
+    n["default"] = e;
     return Object.freeze(n);
   }
 
@@ -335,7 +333,7 @@
         },
         tag: {
           type: String,
-          "default": 'div'
+          "default": ''
         }
       },
       name: 'feature',
@@ -347,11 +345,15 @@
       render: function render(createElement) {
         if (!this.isVisible) return; // fix for vue3: h is imported instead of passed by the render function
 
-        var create = vue__namespace.h || createElement;
-        return create(this.tag, {
-          'feature-name': this.name,
-          'feature-variant': this.variant
-        }, getDefaultSlot(this.$slots["default"]));
+        if (!!this.tag) {
+          var create = vue__namespace.h || createElement;
+          return create(this.tag, {
+            'feature-name': this.name,
+            'feature-variant': this.variant
+          }, getDefaultSlot(this.$slots["default"]));
+        }
+
+        return getDefaultSlot(this.$slots["default"]);
       },
       methods: {
         _isVisible: function _isVisible(name, variant, data) {
@@ -367,4 +369,4 @@
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));

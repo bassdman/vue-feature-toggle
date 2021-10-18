@@ -309,7 +309,7 @@ function vuePlugin(api) {
       },
       tag: {
         type: String,
-        "default": 'div'
+        "default": ''
       }
     },
     name: 'feature',
@@ -321,11 +321,15 @@ function vuePlugin(api) {
     render: function render(createElement) {
       if (!this.isVisible) return; // fix for vue3: h is imported instead of passed by the render function
 
-      var create = vue.h || createElement;
-      return create(this.tag, {
-        'feature-name': this.name,
-        'feature-variant': this.variant
-      }, getDefaultSlot(this.$slots["default"]));
+      if (!!this.tag) {
+        var create = vue.h || createElement;
+        return create(this.tag, {
+          'feature-name': this.name,
+          'feature-variant': this.variant
+        }, getDefaultSlot(this.$slots["default"]));
+      }
+
+      return getDefaultSlot(this.$slots["default"]);
     },
     methods: {
       _isVisible: function _isVisible(name, variant, data) {
