@@ -41,7 +41,7 @@ function vuePlugin(api) {
 
             // fix for vue3: h is imported instead of passed by the render function
             if (!!this.tag) {
-                const create = vue.h || createElement;
+                const create = vue[(() => 'h')()] || createElement;
                 return create(this.tag, {
                     'feature-name': this.name,
                     'feature-variant': this.variant
