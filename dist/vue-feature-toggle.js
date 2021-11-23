@@ -322,7 +322,10 @@ function vuePlugin(api) {
       if (!this.isVisible) return; // fix for vue3: h is imported instead of passed by the render function
 
       if (!!this.tag) {
-        var create = vue.h || createElement;
+        var create = vue[function () {
+          return 'h';
+        }()] || createElement;
+
         return create(this.tag, {
           'feature-name': this.name,
           'feature-variant': this.variant
