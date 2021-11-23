@@ -1,6 +1,10 @@
 <template>
     <h1>We test vue-feature-toggle in vue3</h1>
     <!-- The name property is required -->
+      <div>
+        <input v-model="featurex">"{{featurex}}"
+      </div>
+       <feature name="featurex">This is a dynamic feature</feature>
         <feature name="feature1">This is "Feature1"</feature>
         
         <!-- The variant property is optional and can be any string -->
@@ -25,6 +29,11 @@ export default {
   name: 'app',
   components: {
     feature
+  },
+  data(){
+    return {
+      featurex: 'abc'
+    }
   }
 }
 </script>
