@@ -26,7 +26,7 @@ function vuePlugin(api) {
             },
             tag: {
                 type: String,
-                default: 'div'
+                default: ''
             }
         },
         name: 'feature',
@@ -40,11 +40,14 @@ function vuePlugin(api) {
                 return;
 
             // fix for vue3: h is imported instead of passed by the render function
-            const create = vue.h || createElement;
-            return create(this.tag, {
-                'feature-name': this.name,
-                'feature-variant': this.variant
-            }, getDefaultSlot(this.$slots.default))
+            if (!!this.tag) {
+                const create = vue[(() => 'h')()] || createElement;
+                return create(this.tag, {
+                    'feature-name': this.name,
+                    'feature-variant': this.variant
+                }, getDefaultSlot(this.$slots.default));
+            }
+            return getDefaultSlot(this.$slots.default);
         },
         methods: {
             _isVisible: function(name, variant, data) {
