@@ -1,7 +1,7 @@
 import * as vue from 'vue';
-import featureToggleApi from 'feature-toggle-api';
+import {useFeatureToggle} from 'feature-toggle-api';
 
-const FeatureToggleComponent = new featureToggleApi();
+const featureToggle = useFeatureToggle();
 
 function getDefaultSlot(slot) {
     // in vue3, slot is a function
@@ -13,7 +13,7 @@ function getDefaultSlot(slot) {
 }
 
 function vuePlugin(api) {
-    Object.assign(api, {
+    return {
         props: {
             name: {
                 type: String
@@ -54,11 +54,8 @@ function vuePlugin(api) {
                 return api.isVisible(name, variant, data);
             }
         }
-    })
+    }
 }
 
-FeatureToggleComponent.addPlugin(vuePlugin);
-
-export {
-    FeatureToggleComponent
-}
+featureToggle.addPlugin(vuePlugin);
+export default featureToggle;

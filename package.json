@@ -1,7 +1,8 @@
 {
     "name": "vue-feature-toggle",
     "main": "dist/vue-feature-toggle.js",
-    "version": "2.0.7",
+    "types": "dist/feature-toggle.d.ts",
+    "version": "3.0.0",
     "description": "Enables advanced feature-toggle with vue",
     "author": "Manuel Gelsen",
     "scripts": {
@@ -15,6 +16,7 @@
         "url": "https://github.com/bassdman/vue-feature-toggle.git/issues"
     },
     "license": "MIT",
+    "type": "module",
     "keywords": [
         "vuejs",
         "feature-flag",
@@ -24,21 +26,20 @@
         "variant"
     ],
     "devDependencies": {
-        "@babel/core": "^7.14.3",
-        "@babel/preset-env": "^7.14.4",
-        "@rollup/plugin-babel": "^5.3.0",
-        "@rollup/plugin-commonjs": "^19.0.0",
-        "@rollup/plugin-node-resolve": "^13.0.0",
-        "@rollup/plugin-terser": "^0.4.1",
-        "jasmine": "^2.99.0",
-        "rollup": "^2.50.4",
-        "rollup-plugin-ignore": "^1.0.9",
-        "rollup-plugin-vue": "^6.0.0"
+        "@rollup/plugin-replace": "^6.0.2",
+        "@rollup/plugin-terser": "^0.4.4",
+        "@rollup/plugin-typescript": "^12.1.2",
+        "@types/node": "^22.10.7",
+        "rollup": "^4.31.0",
+        "rollup-plugin-dts": "^6.1.1",
+        "rollup-plugin-vue": "^6.0.0",
+        "tslib": "^2.8.1",
+        "tsx": "^4.19.2"
     },
     "peerDependencies": {
         "vue": "^2.x || ^3.x"
     },
     "dependencies": {
-        "feature-toggle-api": "^3.4.1"
+        "feature-toggle-api": "^4.1.0"
     }
 }

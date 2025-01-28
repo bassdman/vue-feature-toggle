@@ -55,27 +55,25 @@ When you want to change a visibility rule, for example "Show feature XYZ also in
 Look in the example folder for working examples.
 
 ### Initialisation
-Create a vue project. For example with the vue-cli.
-``` shell
-    npm install -g vue-cli
-    vue create vue-feature-toggle-example
-    cd vue-feature-toggle-example
-    npm install
-```
+Create a vue project, if you don't have one. 
+
 Now install the vue-feature-toggle component. 
 ``` shell
     npm install vue-feature-toggle --save
 ```
-Replace the App.vue - file with the following:
+
+
+Now go into any vue-component and add the following:
 ``` html
 <template>
   <div>
-        <h1>We test vue-feature-toggle in vue2</h1>
+        <h1>We test vue-feature-toggle in vue3</h1>
     <!-- The name property is required -->
         <feature name="feature1">This is "Feature1"</feature>
         
-        <!-- The variant property is optional and can be any string -->
         <feature name="feature2">This is "Feature2"</feature>
+
+        <!-- The variant property is optional and can be any string -->
         <feature name="feature2" variant="new">This is "Feature2" with variant "new"</feature>
         <feature name="feature2" variant="old">This "Feature2" with variant "old"</feature>
         <feature name="feature2" variant="grumpfel">This "Feature2" with variant "grumpfel"</feature>
@@ -85,40 +83,18 @@ Replace the App.vue - file with the following:
   </div>
 </template>
 
-<script>
-import { FeatureToggleComponent as feature } from 'vue-feature-toggle';
+<script setup lang="ts">
+import feature from 'vue-feature-toggle';
 
 //All Feature2-Features will always be shown
-feature.visibility('feature2',true);
-feature.visibility('feature2','new',false); 
+feature.setFlag('feature2',true);
 
+//hide feature2-Features with variant "new"
+feature.setFlag('feature2','new',false);
 //Feature.showLogs();
-export default {
-  name: 'app',
-  components: {
-    feature
-  }
-}
 </script>
 ```
 
-#### Other initialisations
-In a cjs-project
-```javascript
-    const { FeatureToggleComponent : feature} = require('vue-feature-toggle/dist/vue-feature-toggle.umd.js')
-   // do sth with the FeatureToggleComponent
-```
-In the browser
-```html
-    <script src="https://unpkg.com/vue"></script>
-    <!--Important: you can find .umd-Version in the dist-folder of this package -->
-    <script src=".path/to/vue-feature-toggle/dist/vue-feature-toggle.umd.min.js"></script>
-    <script>
-        var feature = window.FeatureToggleComponent;
-
-        //do sth with the FeatureToggleComponent
-    </script>
-```
 See more the projects in the [example-folder](https://github.com/bassdman/vue-feature-toggle/tree/master/examples).
 
 ### Features
@@ -130,10 +106,10 @@ For the next examples we will always use the HTML from above. Just insert the vi
 ```javascript
 // shows Feature1
 //Feature2 is not configured, so it will be hidden
-feature.visibility('feature1',true);
+feature.setFlag('feature1',true);
 
 //You can also write it like this
-feature.visibility('feature1',function (rule) {
+feature.setFlag('feature1',function (rule) {
         //here would be some more complex logic, in this example we keep it simple
         return true;
 });
@@ -146,7 +122,7 @@ feature.visibility('feature1',function (rule) {
     <feature name="feature2" variant="old"/>
     <feature name="feature2" variant="grumpfel"/>
  */
-feature.visibility('feature2', function (rule) {
+feature.setFlag('feature2', function (rule) {
         return true;
 });
 
@@ -157,7 +133,7 @@ feature.visibility('feature2', function (rule) {
     <feature name="feature2" variant="old"/> -> shown
     <feature name="feature2" variant="grumpfel"/> -> shown
 */
-feature.visibility('feature2','new', function (rule) {
+feature.setFlag('feature2','new', function (rule) {
         return false;
 });
 ```
@@ -165,23 +141,23 @@ feature.visibility('feature2','new', function (rule) {
 /*
 You can pass data via the data-attribute. Corresp. HTML-Tag: <feature name="feature3" :data="grumpfel"/>
 */
-feature.visibility('feature3','new', function (rule) {
+feature.setFlag('feature3','new', function (rule) {
       return rule.data == "grumpfel";
 });
 
 //Write a : before the data-tag to parse the content in the data-attribute <feature name="feature3" :data="{'text':'grumpfel'"/> Otherwise the data is returned as a string.
-feature.visibility('feature3','new', function (rule) {
+feature.setFlag('feature3','new', function (rule) {
       return rule.data.text == "grumpfel";
 });
 ```
-#### Default Visibility
-Bored of writing the same visibility rule again and again? Use defaultVisibility. This is the default-rule and will be overwritten by feature.visibility() - rules.
+#### Default flag
+Bored of writing the same flag rule again and again? Use defaultflag. This is the default-rule and will be overwritten by feature.setFlag() - rules.
 ``` javascript
-feature.defaultVisibility(function(rule){
+feature.setDefaultFlag(function(rule){
     return true;
 });
 
-feature.visibility('feature2', 'new', function(rule){
+feature.setFlag('feature2', 'new', function(rule){
     return false;
 });
 /*
@@ -193,7 +169,7 @@ feature.visibility('feature2', 'new', function(rule){
 */
 ```
 
-#### Required Visibility
+#### Required Flag
 This rule is allways executed, before the other rules. When it returns false, the other rules are ignored.
 ``` javascript
 /*
@@ -202,7 +178,7 @@ This rule is allways executed, before the other rules. When it returns false, th
    var globalConfig = { "feature2" : true }
 */
 
-feature.requiredVisibility(function(rule){
+feature.setRequiredFlag(function(rule){
     //In this case it returns true, when name == 'feature2'
     return globalConfig[rule.name] === true;
 });
@@ -210,14 +186,14 @@ feature.requiredVisibility(function(rule){
 /*
   feature2, variant "new" returns false, but requiredConfig returns true. Both rules must match, so it will be hidden
 */
-feature.visibility('feature2','new',function(rule){
+feature.setFlag('feature2','new',function(rule){
     return false;
 });
 
 /*
   feature3 returns true, but requiredConfig returns false. Both rules must match, so Feature3 is hidden
 */
-feature.visibility('feature3',function(rule){
+feature.setFlag('feature3',function(rule){
     return true;
 });
 
@@ -313,4 +289,4 @@ Just look at the modified index.html file.
 ```
 ## License	
 <a href="https://opensource.org/licenses/MIT">MIT</a>.
-Copyright (c) 2018 Manuel Gelsen
+Copyright (c) 2025 Manuel Gelsen

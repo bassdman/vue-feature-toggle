@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "outDir": "dist", // Ausgabeort für die Typen
+    "module": "ESNext", // Oder das Modulformat deiner Wahl
+    "target": "ESNext",
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "skipLibCheck": true, // Typenkonflikte in node_modules ignorieren
+    "moduleResolution": "node"
+  },
+    "include": ["src/**/*.ts"],  // Eingeschlossene Dateien
+    "exclude": ["node_modules"]  ,
+      
+  }
