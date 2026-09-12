@@ -1,8 +1,11 @@
-import { computed as e, defineComponent as t, h as n } from "vue";
-import { useFeatureToggle as r } from "feature-toggle-api";
+import { computed as e, defineComponent as t, h as n, ref as r } from "vue";
+import { useFeatureToggle as i } from "feature-toggle-api";
 //#region src/index.ts
-var i = r();
-function a(r) {
+var a = i(), o = r(0);
+a.on("visibilityrule", () => {
+	o.value += 1;
+}, { ignorePreviousRules: !0 });
+function s(r) {
 	return t({
 		props: {
 			name: {
@@ -18,7 +21,7 @@ function a(r) {
 		},
 		name: "feature",
 		setup(t, { slots: i }) {
-			let a = e(() => r.isActive(t.name, t.variant, t.data));
+			let a = e(() => (o.value, r.isActive(t.name, t.variant, t.data)));
 			return () => a.value ? t.tag ? n(t.tag, {
 				"feature-name": t.name,
 				"feature-variant": t.variant
@@ -26,8 +29,8 @@ function a(r) {
 		}
 	});
 }
-i.addPlugin(a);
+a.addPlugin(s);
 //#endregion
-export { i as default };
+export { a as default };
 
 //# sourceMappingURL=vue-feature-toggle.js.map

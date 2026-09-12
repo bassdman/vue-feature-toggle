@@ -5,6 +5,7 @@
     "skipLibCheck": true, // Typenkonflikte in node_modules ignorieren
     "moduleResolution": "Bundler",
     "allowSyntheticDefaultImports": true,
+    "types": ["node"],
     "noEmit": true
   },
   "include": ["src/**/*.ts"],

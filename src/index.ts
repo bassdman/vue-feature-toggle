@@ -1,7 +1,12 @@
-import { computed, defineComponent, h } from 'vue';
+import { computed, defineComponent, h, ref } from 'vue';
 import {useFeatureToggle, type FeatureToggleApi} from 'feature-toggle-api';
 
 const featureToggle = useFeatureToggle();
+const visibilityRevision = ref(0);
+
+featureToggle.on('visibilityrule', () => {
+    visibilityRevision.value += 1;
+}, { ignorePreviousRules: true });
 
 function vuePlugin(api: FeatureToggleApi): Partial<FeatureToggleApi> {
     return defineComponent({
@@ -23,7 +28,11 @@ function vuePlugin(api: FeatureToggleApi): Partial<FeatureToggleApi> {
         },
         name: 'feature',
         setup(props, { slots }) {
-            const isVisible = computed(() => api.isActive(props.name, props.variant, props.data));
+            const isVisible = computed(() => {
+                // let the compier know that this computed property depends on the visibility revision
+                visibilityRevision.value;
+                return api.isActive(props.name, props.variant, props.data);
+            });
 
             return () => {
                 if (!isVisible.value)

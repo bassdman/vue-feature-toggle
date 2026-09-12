@@ -11,7 +11,7 @@ test('exports the Vue 3 feature component', () => {
     assert.equal(typeof featureComponent.setup, 'function');
 });
 
-test('updates visibility when reactive props change', () => {
+test('updates visibility when feature flags or reactive props change', () => {
     const props = reactive({
         name: 'vue3-hidden-test',
         variant: undefined,
@@ -21,9 +21,12 @@ test('updates visibility when reactive props change', () => {
     const render = featureComponent.setup(props, { slots: { default: () => ['visible'] } });
 
     feature.setFlag('vue3-hidden-test', false);
-    feature.setFlag('vue3-visible-test', true);
     assert.equal(render(), null);
 
+    feature.setFlag('vue3-hidden-test', true);
+    assert.deepEqual(render(), ['visible']);
+
+    feature.setFlag('vue3-visible-test', true);
     props.name = 'vue3-visible-test';
     assert.deepEqual(render(), ['visible']);
 });
