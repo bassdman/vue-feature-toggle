@@ -1,62 +1,38 @@
-import * as vue from 'vue';
-import { useFeatureToggle } from 'feature-toggle-api';
-
-const featureToggle = useFeatureToggle();
-
-function getDefaultSlot(slot) {
-    // in vue3, slot is a function
-    if (typeof slot == 'function')
-        return slot();
-
-    //in vue <= 2 slot can be directly accessed.
-    return slot;
+import * as e from "vue";
+import { useFeatureToggle as t } from "feature-toggle-api";
+//#region src/index.ts
+var n = t();
+function r(e) {
+	return typeof e == "function" ? e() : e;
 }
-
-function vuePlugin(api) {
-    return {
-        props: {
-            name: {
-                type: String
-            },
-            variant: {
-                type: String
-            },
-            data: {
-                type: [Object, String]
-            },
-            tag: {
-                type: String,
-                default: ''
-            }
-        },
-        name: 'feature',
-        data() {
-            return {
-                isVisible: api.isVisible(this.name, this.variant, this.data)
-            }
-        },
-        render: function(createElement) {
-            if (!this.isVisible)
-                return;
-
-            // fix for vue3: h is imported instead of passed by the render function
-            if (!!this.tag) {
-                const create = vue[(() => 'h')()] || createElement;
-                return create(this.tag, {
-                    'feature-name': this.name,
-                    'feature-variant': this.variant
-                }, getDefaultSlot(this.$slots.default));
-            }
-            return getDefaultSlot(this.$slots.default);
-        },
-        methods: {
-            _isVisible: function(name, variant, data) {
-                return api.isVisible(name, variant, data);
-            }
-        }
-    }
+function i(t) {
+	return {
+		props: {
+			name: { type: String },
+			variant: { type: String },
+			data: { type: [Object, String] },
+			tag: {
+				type: String,
+				default: ""
+			}
+		},
+		name: "feature",
+		data() {
+			return { isVisible: t.isVisible(this.name, this.variant, this.data) };
+		},
+		render: function(t) {
+			if (this.isVisible) return this.tag ? (e.h || t)(this.tag, {
+				"feature-name": this.name,
+				"feature-variant": this.variant
+			}, r(this.$slots.default)) : r(this.$slots.default);
+		},
+		methods: { _isVisible: function(e, n, r) {
+			return t.isVisible(e, n, r);
+		} }
+	};
 }
+n.addPlugin(i);
+//#endregion
+export { n as default };
 
-featureToggle.addPlugin(vuePlugin);
-
-export { featureToggle as default };
+//# sourceMappingURL=vue-feature-toggle.js.map
