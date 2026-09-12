@@ -8,7 +8,7 @@
 
 ## Info
 Vue-Feature-Toggle implements [feature-toggle-api](https://www.npmjs.com/package/feature-toggle-api) v5.0.0.
-Version 4 ships ESM only; legacy CommonJS and other bundle formats are no longer supported.
+Version 5 ships ESM only; legacy CommonJS and other bundle formats are no longer supported.
 Only a subset of features is listed here. For the others, watch the documentation of the api.
 
 ## Install
@@ -69,14 +69,14 @@ Now go into any vue-component and add the following:
   <div>
         <h1>We test vue-feature-toggle in vue3</h1>
     <!-- The name property is required -->
-        <feature name="feature1">This is "Feature1"</feature>
+        <Feature name="feature1">This is "Feature1"</Feature>
         
-        <feature name="feature2">This is "Feature2"</feature>
+        <Feature name="feature2">This is "Feature2"</Feature>
 
         <!-- The variant property is optional and can be any string -->
-        <feature name="feature2" variant="new">This is "Feature2" with variant "new"</feature>
-        <feature name="feature2" variant="old">This "Feature2" with variant "old"</feature>
-        <feature name="feature2" variant="grumpfel">This "Feature2" with variant "grumpfel"</feature>
+        <Feature name="feature2" variant="new">This is "Feature2" with variant "new"</Feature>
+        <Feature name="feature2" variant="old">This "Feature2" with variant "old"</Feature>
+        <Feature name="feature2" variant="grumpfel">This "Feature2" with variant "grumpfel"</Feature>
         
         <feature name="feature3" variant="old" data="grumpfel">This "Feature3" with variant "old" has some Data.</feature>
         <feature name="feature3" variant="new" :data="{'text':'grumpfel'}">This "Feature3" with variant "old" has some Data. (watch the : before the data-attribute. Otherwise you'll get this as a string...)</feature>
@@ -84,7 +84,7 @@ Now go into any vue-component and add the following:
 </template>
 
 <script setup lang="ts">
-import feature from 'vue-feature-toggle';
+import feature, { Feature } from 'vue-feature-toggle';
 
 //All Feature2-Features will always be shown
 feature.setFlag('feature2',true);

@@ -5,32 +5,29 @@ var a = i(), o = r(0);
 a.on("visibilityrule", () => {
 	o.value += 1;
 }, { ignorePreviousRules: !0 });
-function s(r) {
-	return t({
-		props: {
-			name: {
-				type: String,
-				required: !0
-			},
-			variant: { type: String },
-			data: { type: [Object, String] },
-			tag: {
-				type: String,
-				default: ""
-			}
+var s = t({
+	name: "Feature",
+	props: {
+		name: {
+			type: String,
+			required: !0
 		},
-		name: "feature",
-		setup(t, { slots: i }) {
-			let a = e(() => (o.value, r.isActive(t.name, t.variant, t.data)));
-			return () => a.value ? t.tag ? n(t.tag, {
-				"feature-name": t.name,
-				"feature-variant": t.variant
-			}, i.default?.()) : i.default?.() ?? null : null;
+		variant: { type: String },
+		data: { type: [Object, String] },
+		tag: {
+			type: String,
+			default: ""
 		}
-	});
-}
-a.addPlugin(s);
+	},
+	setup(t, { slots: r }) {
+		let i = e(() => (o.value, a.isActive(t.name, t.variant, t.data)));
+		return () => i.value ? t.tag ? n(t.tag, {
+			"feature-name": t.name,
+			"feature-variant": t.variant
+		}, r.default?.()) : r.default?.() ?? null : null;
+	}
+});
 //#endregion
-export { a as default };
+export { s as Feature, a as default, a as featureToggle };
 
 //# sourceMappingURL=vue-feature-toggle.js.map

@@ -13,7 +13,7 @@ export default defineConfig({
         rollupOptions: {
             external: ['vue', 'feature-toggle-api'],
             output: {
-                exports: 'default',
+                exports: 'named',
             },
         },
     },

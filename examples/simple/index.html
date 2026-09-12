@@ -31,14 +31,14 @@
     </script>
     <script type="module">
         import { createApp } from 'vue';
-        import feature from 'vue-feature-toggle';
+        import feature, { Feature } from 'vue-feature-toggle';
 
         feature.setFlag('feature2', true);
         feature.setFlag('feature2', 'new', false);
 
         createApp({
             components: {
-                feature
+                feature: Feature
             }
         }).mount('#app');
     </script>

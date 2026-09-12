@@ -1,54 +1,51 @@
 import { computed, defineComponent, h, ref } from 'vue';
-import {useFeatureToggle, type FeatureToggleApi} from 'feature-toggle-api';
+import {useFeatureToggle} from 'feature-toggle-api';
 
-const featureToggle = useFeatureToggle();
+export const featureToggle = useFeatureToggle();
 const visibilityRevision = ref(0);
 
 featureToggle.on('visibilityrule', () => {
     visibilityRevision.value += 1;
 }, { ignorePreviousRules: true });
 
-function vuePlugin(api: FeatureToggleApi): Partial<FeatureToggleApi> {
-    return defineComponent({
-        props: {
-            name: {
-                type: String,
-                required: true
-            },
-            variant: {
-                type: String
-            },
-            data: {
-                type: [Object, String]
-            },
-            tag: {
-                type: String,
-                default: ''
-            }
+export const Feature = defineComponent({
+    name: 'Feature',
+    props: {
+        name: {
+            type: String,
+            required: true
         },
-        name: 'feature',
-        setup(props, { slots }) {
-            const isVisible = computed(() => {
-                // let the compier know that this computed property depends on the visibility revision
-                visibilityRevision.value;
-                return api.isActive(props.name, props.variant, props.data);
-            });
-
-            return () => {
-                if (!isVisible.value)
-                    return null;
-
-                if (props.tag) {
-                    return h(props.tag, {
-                        'feature-name': props.name,
-                        'feature-variant': props.variant
-                    }, slots.default?.());
-                }
-                return slots.default?.() ?? null;
-            };
+        variant: {
+            type: String
+        },
+        data: {
+            type: [Object, String]
+        },
+        tag: {
+            type: String,
+            default: ''
         }
-    }) as unknown as Partial<FeatureToggleApi>;
-}
+    },
+    setup(props, { slots }) {
+        const isVisible = computed(() => {
+            // Let Vue know that the computed value depends on feature rule changes.
+            visibilityRevision.value;
+            return featureToggle.isActive(props.name, props.variant, props.data);
+        });
 
-featureToggle.addPlugin(vuePlugin);
+        return () => {
+            if (!isVisible.value)
+                return null;
+
+            if (props.tag) {
+                return h(props.tag, {
+                    'feature-name': props.name,
+                    'feature-variant': props.variant
+                }, slots.default?.());
+            }
+            return slots.default?.() ?? null;
+        };
+    }
+});
+
 export default featureToggle;
