@@ -283,7 +283,7 @@ Just look at the modified index.html file.
         <feature name="feature2" noscript="noscript">This is shown without javascript.</feature>
         <feature name="feature2" variant="new" noscript="true">This is shown without javascript.</feature>
   </div>
-  <script src="dist/build.js"></script>
+    <!-- Import vue-feature-toggle from your Vue application entry point. -->
 </body>
 </html>
 ```

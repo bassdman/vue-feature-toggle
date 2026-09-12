@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>Welcome to Vue</title>
@@ -20,26 +20,27 @@
         <feature name="feature3" variant="new" :data="{'text':'grumpfel'}">This "Feature3" with variant "old" has some Data. (watch the : before the data-attribute. Otherwise you'll get this as a string...)</feature>
     </div>
 
-    <script src="https://unpkg.com/vue"></script>
-    <!--Important: you need the .es5-Version if you directly embed the plugin in the browser-->
-    <script src="../../dist/vue-feature-toggle.umd.min.js"></script>
-    <script>
-        var feature = window.FeatureToggleComponent;
-
-        //Feature1 will always be shown 
-        feature.visibility('feature2', true);
-        feature.visibility('feature2', 'new', function() {
-            return false
-        });
-
-        //write down the other visibility-rules here     
-
-        var vue = new Vue({
-            el: '#app',
-            components: {
-                'feature': feature
+    <script type="importmap">
+        {
+            "imports": {
+                "vue": "https://unpkg.com/vue@3.5.13/dist/vue.esm-browser.js",
+                "feature-toggle-api": "../../node_modules/feature-toggle-api/dist/feature-toggle.js",
+                "vue-feature-toggle": "../../dist/vue-feature-toggle.js"
             }
-        })
+        }
+    </script>
+    <script type="module">
+        import { createApp } from 'vue';
+        import feature from 'vue-feature-toggle';
+
+        feature.setFlag('feature2', true);
+        feature.setFlag('feature2', 'new', false);
+
+        createApp({
+            components: {
+                feature
+            }
+        }).mount('#app');
     </script>
 </body>
 

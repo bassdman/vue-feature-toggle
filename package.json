@@ -6,6 +6,8 @@
     "description": "Enables advanced feature-toggle with vue",
     "author": "Manuel Gelsen",
     "scripts": {
+        "pretest": "npm run build",
+        "test": "tsx --test src/index.test.ts",
         "build": "vite build"
     },
     "repository": {
@@ -37,11 +39,12 @@
     ],
     "devDependencies": {
         "@types/node": "^22.20.2",
+        "tsx": "^4.23.13",
         "vite": "^8.3.0",
         "vite-plugin-dts": "^5.1.0"
     },
     "peerDependencies": {
-        "vue": "^3.x"
+        "vue": "^3.0.0"
     },
     "dependencies": {
         "feature-toggle-api": "5.0.0"

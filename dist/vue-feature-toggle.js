@@ -1,14 +1,14 @@
-import * as e from "vue";
-import { useFeatureToggle as t } from "feature-toggle-api";
+import { computed as e, defineComponent as t, h as n } from "vue";
+import { useFeatureToggle as r } from "feature-toggle-api";
 //#region src/index.ts
-var n = t();
-function r(e) {
-	return typeof e == "function" ? e() : e;
-}
-function i(t) {
-	return {
+var i = r();
+function a(r) {
+	return t({
 		props: {
-			name: { type: String },
+			name: {
+				type: String,
+				required: !0
+			},
 			variant: { type: String },
 			data: { type: [Object, String] },
 			tag: {
@@ -17,22 +17,17 @@ function i(t) {
 			}
 		},
 		name: "feature",
-		data() {
-			return { isVisible: t.isVisible(this.name, this.variant, this.data) };
-		},
-		render: function(t) {
-			if (this.isVisible) return this.tag ? (e.h || t)(this.tag, {
-				"feature-name": this.name,
-				"feature-variant": this.variant
-			}, r(this.$slots.default)) : r(this.$slots.default);
-		},
-		methods: { _isVisible: function(e, n, r) {
-			return t.isVisible(e, n, r);
-		} }
-	};
+		setup(t, { slots: i }) {
+			let a = e(() => r.isActive(t.name, t.variant, t.data));
+			return () => a.value ? t.tag ? n(t.tag, {
+				"feature-name": t.name,
+				"feature-variant": t.variant
+			}, i.default?.()) : i.default?.() ?? null : null;
+		}
+	});
 }
-n.addPlugin(i);
+i.addPlugin(a);
 //#endregion
-export { n as default };
+export { i as default };
 
 //# sourceMappingURL=vue-feature-toggle.js.map

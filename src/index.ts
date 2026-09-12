@@ -1,22 +1,14 @@
-import * as vue from 'vue';
-import {useFeatureToggle} from 'feature-toggle-api';
+import { computed, defineComponent, h } from 'vue';
+import {useFeatureToggle, type FeatureToggleApi} from 'feature-toggle-api';
 
 const featureToggle = useFeatureToggle();
 
-function getDefaultSlot(slot) {
-    // in vue3, slot is a function
-    if (typeof slot == 'function')
-        return slot();
-
-    //in vue <= 2 slot can be directly accessed.
-    return slot;
-}
-
-function vuePlugin(api) {
-    return {
+function vuePlugin(api: FeatureToggleApi): Partial<FeatureToggleApi> {
+    return defineComponent({
         props: {
             name: {
-                type: String
+                type: String,
+                required: true
             },
             variant: {
                 type: String
@@ -30,31 +22,23 @@ function vuePlugin(api) {
             }
         },
         name: 'feature',
-        data() {
-            return {
-                isVisible: api.isVisible(this.name, this.variant, this.data)
-            }
-        },
-        render: function(createElement) {
-            if (!this.isVisible)
-                return;
+        setup(props, { slots }) {
+            const isVisible = computed(() => api.isActive(props.name, props.variant, props.data));
 
-            // fix for vue3: h is imported instead of passed by the render function
-            if (!!this.tag) {
-                const create = vue[(() => 'h')()] || createElement;
-                return create(this.tag, {
-                    'feature-name': this.name,
-                    'feature-variant': this.variant
-                }, getDefaultSlot(this.$slots.default));
-            }
-            return getDefaultSlot(this.$slots.default);
-        },
-        methods: {
-            _isVisible: function(name, variant, data) {
-                return api.isVisible(name, variant, data);
-            }
+            return () => {
+                if (!isVisible.value)
+                    return null;
+
+                if (props.tag) {
+                    return h(props.tag, {
+                        'feature-name': props.name,
+                        'feature-variant': props.variant
+                    }, slots.default?.());
+                }
+                return slots.default?.() ?? null;
+            };
         }
-    }
+    }) as unknown as Partial<FeatureToggleApi>;
 }
 
 featureToggle.addPlugin(vuePlugin);

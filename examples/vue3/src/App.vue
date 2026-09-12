@@ -5,6 +5,7 @@ import feature from 'vue-feature-toggle';
 //All Feature2-Features will always be shown
 feature.setFlag('feature2',false);
 feature.setFlag('feature2','new',true);
+feature.setFlag('feature3',true);
 //Feature.showLogs();
 
 const featurex = ref('abcd');
