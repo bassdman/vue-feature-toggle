@@ -39,6 +39,7 @@
     ],
     "devDependencies": {
         "@types/node": "^22.20.2",
+        "@vue/server-renderer": "^3.5.42",
         "tsx": "^4.23.13",
         "vite": "^8.3.0",
         "vite-plugin-dts": "^5.1.0"

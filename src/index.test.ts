@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { isVNode, reactive } from 'vue';
-import featureToggle, { Feature } from './index.js';
+import { createSSRApp, h, isVNode, reactive } from 'vue';
+import { renderToString } from '@vue/server-renderer';
+import featureToggle, { createFeatureToggle, Feature } from './index.js';
 
 const featureComponent = Feature as any;
 
@@ -58,4 +59,40 @@ test('renders a tagged feature as a Vue 3 VNode', () => {
     assert.equal(rendered.type, 'section');
     assert.equal(rendered.props['feature-name'], 'tagged-vue3-test');
     assert.equal(rendered.props['feature-variant'], 'new');
+});
+
+test('renders the component through a real Vue 3 app', async () => {
+    featureToggle.setFlag('mounted-vue3-test', true);
+    const app = createSSRApp({
+        render: () => h(Feature, { name: 'mounted-vue3-test' }, {
+            default: () => 'mounted content'
+        })
+    });
+
+    assert.match(await renderToString(app), /mounted content/);
+});
+
+test('creates isolated API and component instances', () => {
+    const first = createFeatureToggle({ isolatedFirst: true });
+    const second = createFeatureToggle({ isolatedSecond: true });
+
+    assert.equal(first.featureToggle.isActive('isolatedFirst'), true);
+    assert.equal(first.featureToggle.isActive('isolatedSecond'), false);
+    assert.equal(second.featureToggle.isActive('isolatedFirst'), false);
+    assert.equal(second.featureToggle.isActive('isolatedSecond'), true);
+    assert.notEqual(first.featureToggle, second.featureToggle);
+    assert.notEqual(first.Feature, second.Feature);
+});
+
+test('accepts arbitrary data values', () => {
+    const props = reactive({
+        name: 'arbitrary-data-test',
+        variant: undefined,
+        data: 42,
+        tag: ''
+    });
+    const render = Feature.setup!(props as never, { slots: { default: () => ['visible'] } } as never);
+
+    featureToggle.setFlag('arbitrary-data-test', (_,) => true);
+    assert.deepEqual(render(), ['visible']);
 });
